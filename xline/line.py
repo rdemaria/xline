@@ -45,14 +45,14 @@ class Line(Element):
         return len(self.elements)
 
 
-    def to_dict(self, keepextra=True):
+    def to_dict(self):
         out = {}
-        out["elements"] = [el.to_dict(keepextra) for el in self.elements]
+        out["elements"] = [el.to_dict() for el in self.elements]
         out["element_names"] = self.element_names[:]
         return out
 
     @classmethod
-    def from_dict(cls, dct, keepextra=True):
+    def from_dict(cls, dct,elements=elements):
         self = cls(elements=[], element_names=[])
         for el in dct["elements"]:
             eltype = getattr(elements, el["__class__"])
@@ -61,14 +61,14 @@ class Line(Element):
         self.element_names = dct["element_names"]
         return self
 
-    def to_json(self, filename,  keepextra=True):
+    def to_json(self, filename):
         with open(filename, 'w') as fid:
-            json.dump(self.to_dict(keepextra=keepextra), fid, cls=JEncoder)
+            json.dump(self.to_dict(), fid, cls=JEncoder)
 
     @classmethod
-    def from_json(cls, filename,  keepextra=True):
+    def from_json(cls, filename):
         with open(filename, 'r') as fid:
-            return cls.from_dict(json.load(fid), keepextra=keepextra)
+            return cls.from_dict(json.load(fid))
 
     def append_line(self, line):
         # Append the elements
